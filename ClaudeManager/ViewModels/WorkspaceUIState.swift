@@ -56,10 +56,12 @@ final class WorkspacePresentationState: ObservableObject {
     }
 
     func focus(tab: SessionTerminalTab, for sessionID: UUID) {
+        objectWillChange.send()
         terminalTabs[sessionID] = tab
     }
 
     func resetTerminalTab(for sessionID: UUID) {
+        objectWillChange.send()
         terminalTabs.removeValue(forKey: sessionID)
     }
 }

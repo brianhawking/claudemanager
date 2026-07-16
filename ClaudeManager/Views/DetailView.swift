@@ -71,6 +71,7 @@ private struct SessionDetailView: View {
                 .frame(maxWidth: 260)
 
                 activeTerminalView(runtime: activeRuntime)
+                    .id(uiState.terminalTab(for: detail.session.id))
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .background(Color(nsColor: .textBackgroundColor))
                     .clipShape(RoundedRectangle(cornerRadius: 10))
@@ -260,13 +261,8 @@ struct WorkstreamMemorySheet: View {
         onMemoryChange: @escaping (WorkstreamMemory) -> Void,
         onUndo: @escaping () -> Void
     ) {
-        self.repository = repository
-        self.workstream = workstream
-        self.session = session
-        self.sourceSessionName = sourceSessionName
-        self.onMemoryChange = onMemoryChange
-        self.onUndo = onUndo
-        _draftMemory = State(initialValue: workstream.memory ?? WorkstreamMemory(
+        let existingMemory = workstream.memory
+        let initialMemory = existingMemory ?? WorkstreamMemory(
             objective: "",
             currentState: "",
             decisions: [],
@@ -274,8 +270,16 @@ struct WorkstreamMemorySheet: View {
             risksAndUnknowns: [],
             updatedAt: workstream.lastOpenedAt ?? workstream.createdAt,
             sourceSessionId: session?.id,
-            revision: workstream.memory?.revision ?? 0
-        ))
+            revision: existingMemory?.revision ?? 0
+        )
+
+        self.repository = repository
+        self.workstream = workstream
+        self.session = session
+        self.sourceSessionName = sourceSessionName
+        self.onMemoryChange = onMemoryChange
+        self.onUndo = onUndo
+        _draftMemory = State(initialValue: initialMemory)
     }
 
     var body: some View {

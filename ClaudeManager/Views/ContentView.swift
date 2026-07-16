@@ -498,11 +498,9 @@ struct ContentView: View {
     private func runHandoffGeneration(for detail: SessionDetailContext, closeAfter: Bool) async {
         guard
             let latestSession = viewModel.session(id: detail.session.id),
-            let latestWorkstream = viewModel.workstream(id: detail.workstream.id),
-            let sessionIdentifier = latestSession.claudeSessionIdentifier,
-            !sessionIdentifier.isEmpty
+            let latestWorkstream = viewModel.workstream(id: detail.workstream.id)
         else {
-            handoffErrorMessage = "This session does not have an active Claude session identifier yet."
+            handoffErrorMessage = "This session could not be resolved for Workstream Memory generation."
             return
         }
 
@@ -512,7 +510,7 @@ struct ContentView: View {
                     repositoryPath: detail.repository.folderPath,
                     workstreamName: latestWorkstream.name,
                     sessionName: latestSession.name,
-                    claudeSessionIdentifier: sessionIdentifier,
+                    claudeSessionIdentifier: latestSession.claudeSessionIdentifier,
                     existingMemory: latestWorkstream.memory
                 )
             )

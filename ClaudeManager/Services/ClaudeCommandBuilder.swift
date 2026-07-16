@@ -24,7 +24,7 @@ enum ClaudeCommandBuilder {
             parts.append(shellQuoted(prompt))
         }
 
-        return parts.joined(separator: " ") + "\n"
+        return parts.joined(separator: " ") + "\r"
     }
 
     private static func shellQuoted(_ value: String) -> String {

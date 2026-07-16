@@ -4,7 +4,7 @@ struct HandoffGenerationRequest {
     let repositoryPath: String
     let workstreamName: String
     let sessionName: String
-    let claudeSessionIdentifier: String
+    let claudeSessionIdentifier: String?
     let existingMemory: WorkstreamMemory?
 }
 
@@ -14,6 +14,14 @@ struct HandoffGenerationResponse: Codable {
     let decisions: [String]
     let openWork: [String]
     let risksAndUnknowns: [String]
+}
+
+private struct ClaudeStructuredOutputEnvelope: Codable {
+    let structuredOutput: HandoffGenerationResponse?
+
+    private enum CodingKeys: String, CodingKey {
+        case structuredOutput = "structured_output"
+    }
 }
 
 enum HandoffGenerationError: LocalizedError {
@@ -35,24 +43,67 @@ enum HandoffGenerationError: LocalizedError {
 
 struct HandoffGenerationService {
     func generateHandoff(request: HandoffGenerationRequest) async throws -> HandoffGenerationResponse {
+        let prompt = HandoffPromptBuilder.handoffPrompt(
+            workstreamName: request.workstreamName,
+            sessionName: request.sessionName,
+            existingMemory: request.existingMemory
+        )
+
+        if let sessionIdentifier = request.claudeSessionIdentifier, !sessionIdentifier.isEmpty {
+            do {
+                return try runClaude(
+                    repositoryPath: request.repositoryPath,
+                    arguments: [
+                        "claude",
+                        "-p",
+                        "--output-format", "json",
+                        "--resume", sessionIdentifier,
+                        "--json-schema", HandoffPromptBuilder.outputSchema(),
+                        prompt
+                    ]
+                )
+            } catch let error as HandoffGenerationError {
+                if case .processFailed(let message) = error,
+                   message.localizedCaseInsensitiveContains("No conversation found with session ID") {
+                    return try runClaude(
+                        repositoryPath: request.repositoryPath,
+                        arguments: [
+                            "claude",
+                            "-c",
+                            "-p",
+                            "--output-format", "json",
+                            "--json-schema", HandoffPromptBuilder.outputSchema(),
+                            prompt
+                        ]
+                    )
+                }
+
+                throw error
+            }
+        }
+
+        return try runClaude(
+            repositoryPath: request.repositoryPath,
+            arguments: [
+                "claude",
+                "-c",
+                "-p",
+                "--output-format", "json",
+                "--json-schema", HandoffPromptBuilder.outputSchema(),
+                prompt
+            ]
+        )
+    }
+
+    private func runClaude(repositoryPath: String, arguments: [String]) throws -> HandoffGenerationResponse {
         let process = Process()
         let outputPipe = Pipe()
         let errorPipe = Pipe()
 
         process.executableURL = URL(fileURLWithPath: "/usr/bin/env")
-        process.currentDirectoryURL = URL(fileURLWithPath: request.repositoryPath)
+        process.currentDirectoryURL = URL(fileURLWithPath: repositoryPath)
         process.environment = TerminalEnvironment.resolvedEnvironment()
-        process.arguments = [
-            "claude",
-            "-p",
-            "--resume", request.claudeSessionIdentifier,
-            "--json-schema", HandoffPromptBuilder.outputSchema(),
-            HandoffPromptBuilder.handoffPrompt(
-                workstreamName: request.workstreamName,
-                sessionName: request.sessionName,
-                existingMemory: request.existingMemory
-            )
-        ]
+        process.arguments = arguments
         process.standardOutput = outputPipe
         process.standardError = errorPipe
 
@@ -71,13 +122,23 @@ struct HandoffGenerationService {
             throw HandoffGenerationError.processFailed(message.isEmpty ? "Claude handoff generation failed." : message)
         }
 
+        return try decodeResponse(from: stdout)
+    }
+
+    private func decodeResponse(from stdout: Data) throws -> HandoffGenerationResponse {
         let decoder = JSONDecoder()
-        guard let response = try? decoder.decode(HandoffGenerationResponse.self, from: stdout) else {
-            let raw = String(decoding: stdout, as: UTF8.self)
-            NSLog("Invalid Workstream Memory JSON response: %@", raw)
-            throw HandoffGenerationError.invalidResponse
+
+        if let envelope = try? decoder.decode(ClaudeStructuredOutputEnvelope.self, from: stdout),
+           let structuredOutput = envelope.structuredOutput {
+            return structuredOutput
         }
 
-        return response
+        if let directResponse = try? decoder.decode(HandoffGenerationResponse.self, from: stdout) {
+            return directResponse
+        }
+
+        let raw = String(decoding: stdout, as: UTF8.self)
+        NSLog("Invalid Workstream Memory JSON response: %@", raw)
+        throw HandoffGenerationError.invalidResponse
     }
 }
