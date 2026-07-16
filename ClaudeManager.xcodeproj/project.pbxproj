@@ -1,0 +1,578 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		F7CC1001300900010027D21D /* SwiftTerm in Frameworks */ = {isa = PBXBuildFile; productRef = F7CC1000300900010027D21D /* SwiftTerm */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F7AA0B9130086F5F0027D21D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F7AA0B7730086F5D0027D21D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F7AA0B7E30086F5D0027D21D;
+			remoteInfo = ClaudeManager;
+		};
+		F7AA0B9B30086F5F0027D21D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F7AA0B7730086F5D0027D21D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F7AA0B7E30086F5D0027D21D;
+			remoteInfo = ClaudeManager;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		F7AA0B7F30086F5D0027D21D /* ClaudeManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClaudeManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F7AA0B9030086F5F0027D21D /* ClaudeManagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClaudeManagerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F7AA0B9A30086F5F0027D21D /* ClaudeManagerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ClaudeManagerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		F7AA0B8130086F5D0027D21D /* ClaudeManager */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = ClaudeManager;
+			sourceTree = "<group>";
+		};
+		F7AA0B9330086F5F0027D21D /* ClaudeManagerTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = ClaudeManagerTests;
+			sourceTree = "<group>";
+		};
+		F7AA0B9D30086F5F0027D21D /* ClaudeManagerUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = ClaudeManagerUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F7AA0B7C30086F5D0027D21D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F7CC1001300900010027D21D /* SwiftTerm in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F7AA0B8D30086F5F0027D21D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F7AA0B9730086F5F0027D21D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F7AA0B7630086F5D0027D21D = {
+			isa = PBXGroup;
+			children = (
+				F7AA0B8130086F5D0027D21D /* ClaudeManager */,
+				F7AA0B9330086F5F0027D21D /* ClaudeManagerTests */,
+				F7AA0B9D30086F5F0027D21D /* ClaudeManagerUITests */,
+				F7AA0B8030086F5D0027D21D /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		F7AA0B8030086F5D0027D21D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F7AA0B7F30086F5D0027D21D /* ClaudeManager.app */,
+				F7AA0B9030086F5F0027D21D /* ClaudeManagerTests.xctest */,
+				F7AA0B9A30086F5F0027D21D /* ClaudeManagerUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F7AA0B7E30086F5D0027D21D /* ClaudeManager */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F7AA0BA430086F5F0027D21D /* Build configuration list for PBXNativeTarget "ClaudeManager" */;
+			buildPhases = (
+				F7AA0B7B30086F5D0027D21D /* Sources */,
+				F7AA0B7C30086F5D0027D21D /* Frameworks */,
+				F7AA0B7D30086F5D0027D21D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				F7AA0B8130086F5D0027D21D /* ClaudeManager */,
+			);
+			name = ClaudeManager;
+			packageProductDependencies = (
+				F7CC1000300900010027D21D /* SwiftTerm */,
+			);
+			productName = ClaudeManager;
+			productReference = F7AA0B7F30086F5D0027D21D /* ClaudeManager.app */;
+			productType = "com.apple.product-type.application";
+		};
+		F7AA0B8F30086F5F0027D21D /* ClaudeManagerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F7AA0BA730086F5F0027D21D /* Build configuration list for PBXNativeTarget "ClaudeManagerTests" */;
+			buildPhases = (
+				F7AA0B8C30086F5F0027D21D /* Sources */,
+				F7AA0B8D30086F5F0027D21D /* Frameworks */,
+				F7AA0B8E30086F5F0027D21D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F7AA0B9230086F5F0027D21D /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				F7AA0B9330086F5F0027D21D /* ClaudeManagerTests */,
+			);
+			name = ClaudeManagerTests;
+			packageProductDependencies = (
+			);
+			productName = ClaudeManagerTests;
+			productReference = F7AA0B9030086F5F0027D21D /* ClaudeManagerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		F7AA0B9930086F5F0027D21D /* ClaudeManagerUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F7AA0BAA30086F5F0027D21D /* Build configuration list for PBXNativeTarget "ClaudeManagerUITests" */;
+			buildPhases = (
+				F7AA0B9630086F5F0027D21D /* Sources */,
+				F7AA0B9730086F5F0027D21D /* Frameworks */,
+				F7AA0B9830086F5F0027D21D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F7AA0B9C30086F5F0027D21D /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				F7AA0B9D30086F5F0027D21D /* ClaudeManagerUITests */,
+			);
+			name = ClaudeManagerUITests;
+			packageProductDependencies = (
+			);
+			productName = ClaudeManagerUITests;
+			productReference = F7AA0B9A30086F5F0027D21D /* ClaudeManagerUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F7AA0B7730086F5D0027D21D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1620;
+				LastUpgradeCheck = 1620;
+				TargetAttributes = {
+					F7AA0B7E30086F5D0027D21D = {
+						CreatedOnToolsVersion = 16.2;
+					};
+					F7AA0B8F30086F5F0027D21D = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = F7AA0B7E30086F5D0027D21D;
+					};
+					F7AA0B9930086F5F0027D21D = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = F7AA0B7E30086F5D0027D21D;
+					};
+				};
+			};
+			buildConfigurationList = F7AA0B7A30086F5D0027D21D /* Build configuration list for PBXProject "ClaudeManager" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = F7AA0B7630086F5D0027D21D;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				F7CC1002300900010027D21D /* XCLocalSwiftPackageReference "Vendor/SwiftTerm" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = F7AA0B8030086F5D0027D21D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F7AA0B7E30086F5D0027D21D /* ClaudeManager */,
+				F7AA0B8F30086F5F0027D21D /* ClaudeManagerTests */,
+				F7AA0B9930086F5F0027D21D /* ClaudeManagerUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F7AA0B7D30086F5D0027D21D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F7AA0B8E30086F5F0027D21D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F7AA0B9830086F5F0027D21D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F7AA0B7B30086F5D0027D21D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F7AA0B8C30086F5F0027D21D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F7AA0B9630086F5F0027D21D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F7AA0B9230086F5F0027D21D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F7AA0B7E30086F5D0027D21D /* ClaudeManager */;
+			targetProxy = F7AA0B9130086F5F0027D21D /* PBXContainerItemProxy */;
+		};
+		F7AA0B9C30086F5F0027D21D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F7AA0B7E30086F5D0027D21D /* ClaudeManager */;
+			targetProxy = F7AA0B9B30086F5F0027D21D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		F7AA0BA230086F5F0027D21D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.7;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		F7AA0BA330086F5F0027D21D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.7;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		F7AA0BA530086F5F0027D21D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"ClaudeManager/Preview Content\"";
+				DEVELOPMENT_TEAM = SG7HHALT8U;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.brianveitch.ClaudeManager;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		F7AA0BA630086F5F0027D21D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"ClaudeManager/Preview Content\"";
+				DEVELOPMENT_TEAM = SG7HHALT8U;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.brianveitch.ClaudeManager;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		F7AA0BA830086F5F0027D21D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = SG7HHALT8U;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.7;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.brianveitch.ClaudeManagerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ClaudeManager.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ClaudeManager";
+			};
+			name = Debug;
+		};
+		F7AA0BA930086F5F0027D21D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = SG7HHALT8U;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.7;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.brianveitch.ClaudeManagerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ClaudeManager.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ClaudeManager";
+			};
+			name = Release;
+		};
+		F7AA0BAB30086F5F0027D21D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = SG7HHALT8U;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.brianveitch.ClaudeManagerUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = ClaudeManager;
+			};
+			name = Debug;
+		};
+		F7AA0BAC30086F5F0027D21D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = SG7HHALT8U;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.brianveitch.ClaudeManagerUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = ClaudeManager;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F7AA0B7A30086F5D0027D21D /* Build configuration list for PBXProject "ClaudeManager" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F7AA0BA230086F5F0027D21D /* Debug */,
+				F7AA0BA330086F5F0027D21D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F7AA0BA430086F5F0027D21D /* Build configuration list for PBXNativeTarget "ClaudeManager" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F7AA0BA530086F5F0027D21D /* Debug */,
+				F7AA0BA630086F5F0027D21D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F7AA0BA730086F5F0027D21D /* Build configuration list for PBXNativeTarget "ClaudeManagerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F7AA0BA830086F5F0027D21D /* Debug */,
+				F7AA0BA930086F5F0027D21D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F7AA0BAA30086F5F0027D21D /* Build configuration list for PBXNativeTarget "ClaudeManagerUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F7AA0BAB30086F5F0027D21D /* Debug */,
+				F7AA0BAC30086F5F0027D21D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		F7CC1002300900010027D21D /* XCLocalSwiftPackageReference "Vendor/SwiftTerm" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Vendor/SwiftTerm;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F7CC1000300900010027D21D /* SwiftTerm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F7CC1002300900010027D21D /* XCLocalSwiftPackageReference "Vendor/SwiftTerm" */;
+			productName = SwiftTerm;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = F7AA0B7730086F5D0027D21D /* Project object */;
+}
