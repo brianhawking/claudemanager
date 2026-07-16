@@ -70,7 +70,6 @@ struct ContentView: View {
     @State private var editorSheet: EditorSheet?
     @State private var deleteTarget: DeleteTarget?
     @State private var handoffErrorMessage: String?
-    @State private var pendingCloseAfterHandoffSessionID: UUID?
 
     private let handoffGenerationService = HandoffGenerationService()
 
@@ -113,7 +112,7 @@ struct ContentView: View {
                 onStartSession: startSession,
                 onStartSessionWithoutMemory: startSessionWithoutMemory,
                 onCloseSession: closeSession,
-                onEditSharedContext: showWorkstreamMemoryForSession,
+                onEditWorkstreamMemory: showWorkstreamMemoryForSession,
                 onGenerateHandoff: generateHandoff,
                 onGenerateHandoffAndClose: generateHandoffAndClose
             )
@@ -497,7 +496,12 @@ struct ContentView: View {
 
     @MainActor
     private func runHandoffGeneration(for detail: SessionDetailContext, closeAfter: Bool) async {
-        guard let sessionIdentifier = detail.session.claudeSessionIdentifier, !sessionIdentifier.isEmpty else {
+        guard
+            let latestSession = viewModel.session(id: detail.session.id),
+            let latestWorkstream = viewModel.workstream(id: detail.workstream.id),
+            let sessionIdentifier = latestSession.claudeSessionIdentifier,
+            !sessionIdentifier.isEmpty
+        else {
             handoffErrorMessage = "This session does not have an active Claude session identifier yet."
             return
         }
@@ -506,14 +510,14 @@ struct ContentView: View {
             let response = try await handoffGenerationService.generateHandoff(
                 request: HandoffGenerationRequest(
                     repositoryPath: detail.repository.folderPath,
-                    workstreamName: detail.workstream.name,
-                    sessionName: detail.session.name,
+                    workstreamName: latestWorkstream.name,
+                    sessionName: latestSession.name,
                     claudeSessionIdentifier: sessionIdentifier,
-                    existingMemory: detail.workstream.memory
+                    existingMemory: latestWorkstream.memory
                 )
             )
 
-            let nextRevision = (detail.workstream.memory?.revision ?? 0) + 1
+            let nextRevision = (latestWorkstream.memory?.revision ?? 0) + 1
             let updatedMemory = WorkstreamMemory(
                 objective: response.objective,
                 currentState: response.currentState,
@@ -521,14 +525,14 @@ struct ContentView: View {
                 openWork: response.openWork,
                 risksAndUnknowns: response.risksAndUnknowns,
                 updatedAt: .now,
-                sourceSessionId: detail.session.id,
+                sourceSessionId: latestSession.id,
                 revision: nextRevision
             )
 
-            let changes = summarizeChanges(from: detail.workstream.memory, to: updatedMemory)
-            viewModel.updateWorkstreamMemory(workstreamID: detail.workstream.id, memory: updatedMemory)
+            let changes = summarizeChanges(from: latestWorkstream.memory, to: updatedMemory)
+            viewModel.updateWorkstreamMemory(workstreamID: latestWorkstream.id, memory: updatedMemory)
             uiState.workstreamMemoryNotice = WorkstreamMemoryNotice(
-                workstreamID: detail.workstream.id,
+                workstreamID: latestWorkstream.id,
                 addedItems: changes
             )
 

@@ -122,6 +122,80 @@ final class ClaudeManagerTests: XCTestCase {
     }
 
     @MainActor
+    func testUndoRestoresPreviousWorkstreamMemoryRevision() throws {
+        let persistence = InMemoryWorkspacePersistence()
+        let store = WorkspaceStore(persistence: persistence)
+        let viewModel = WorkspaceViewModel(store: store)
+
+        viewModel.createRepository(name: "Repo", folderPath: "/tmp/repo")
+        let repository = try XCTUnwrap(viewModel.repositories.first)
+        viewModel.createWorkstream(repositoryID: repository.id, name: "Workstream", description: nil)
+        let workstream = try XCTUnwrap(viewModel.workstreams(in: repository).first)
+
+        viewModel.updateWorkstreamMemory(
+            workstreamID: workstream.id,
+            memory: WorkstreamMemory(
+                objective: "First",
+                currentState: "Initial",
+                decisions: [],
+                openWork: ["One"],
+                risksAndUnknowns: [],
+                updatedAt: .now,
+                sourceSessionId: nil,
+                revision: 1
+            )
+        )
+
+        viewModel.updateWorkstreamMemory(
+            workstreamID: workstream.id,
+            memory: WorkstreamMemory(
+                objective: "Second",
+                currentState: "Updated",
+                decisions: ["Use JSON"],
+                openWork: [],
+                risksAndUnknowns: [],
+                updatedAt: .now,
+                sourceSessionId: nil,
+                revision: 2
+            )
+        )
+
+        viewModel.undoLastWorkstreamMemoryUpdate(workstreamID: workstream.id)
+
+        let restored = try XCTUnwrap(viewModel.workstream(id: workstream.id))
+        XCTAssertEqual(restored.memory?.objective, "First")
+        XCTAssertEqual(restored.memory?.currentState, "Initial")
+        XCTAssertEqual(restored.memoryHistory.count, 1)
+    }
+
+    func testStartupCommandIncludesWorkstreamMemoryPromptWhenPresent() {
+        let memory = WorkstreamMemory(
+            objective: "Ship feature",
+            currentState: "API client is in progress",
+            decisions: ["Use JSON persistence"],
+            openWork: ["Add tests"],
+            risksAndUnknowns: ["Backend schema may change"],
+            updatedAt: .now,
+            sourceSessionId: nil,
+            revision: 3
+        )
+
+        let command = ClaudeCommandBuilder.startupCommand(
+            sessionIdentifier: "session-123",
+            sessionName: "Build API",
+            workstreamName: "Add Rewards API",
+            memory: memory
+        )
+
+        XCTAssertTrue(command.contains("claude"))
+        XCTAssertTrue(command.contains("--session-id"))
+        XCTAssertTrue(command.contains("session-123"))
+        XCTAssertTrue(command.contains("Build API"))
+        XCTAssertTrue(command.contains("Add Rewards API"))
+        XCTAssertTrue(command.contains("Workstream Memory"))
+    }
+
+    @MainActor
     func testSessionRuntimeStoreReturnsSameRuntime() throws {
         let detail = SessionDetailContext(
             repository: Repository(name: "Repo", folderPath: "/tmp"),

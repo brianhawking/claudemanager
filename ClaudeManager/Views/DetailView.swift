@@ -9,7 +9,7 @@ struct DetailView: View {
     let onStartSession: (SessionDetailContext) -> Void
     let onStartSessionWithoutMemory: (SessionDetailContext) -> Void
     let onCloseSession: (SessionDetailContext) -> Void
-    let onEditSharedContext: (Workstream) -> Void
+    let onEditWorkstreamMemory: (Workstream) -> Void
     let onGenerateHandoff: (SessionDetailContext) -> Void
     let onGenerateHandoffAndClose: (SessionDetailContext) -> Void
 
@@ -23,7 +23,7 @@ struct DetailView: View {
                 onStartSession: { onStartSession(detail) },
                 onStartSessionWithoutMemory: { onStartSessionWithoutMemory(detail) },
                 onCloseSession: { onCloseSession(detail) },
-                onEditSharedContext: { onEditSharedContext(detail.workstream) },
+                onEditWorkstreamMemory: { onEditWorkstreamMemory(detail.workstream) },
                 onGenerateHandoff: { onGenerateHandoff(detail) },
                 onGenerateHandoffAndClose: { onGenerateHandoffAndClose(detail) }
             )
@@ -53,7 +53,7 @@ private struct SessionDetailView: View {
     let onStartSession: () -> Void
     let onStartSessionWithoutMemory: () -> Void
     let onCloseSession: () -> Void
-    let onEditSharedContext: () -> Void
+    let onEditWorkstreamMemory: () -> Void
     let onGenerateHandoff: () -> Void
     let onGenerateHandoffAndClose: () -> Void
 
@@ -134,7 +134,7 @@ private struct SessionDetailView: View {
                         .controlSize(.small)
                 }
 
-                Button("Memory", action: onEditSharedContext)
+                Button("Memory", action: onEditWorkstreamMemory)
                     .controlSize(.small)
             }
         }
@@ -162,16 +162,32 @@ private struct SessionDetailView: View {
     }
 
     private var runtimeStatusView: some View {
-        HStack(spacing: 8) {
-            statusDot(for: claudeState)
-            Text("Claude \(claudeState.displayName)")
-            Text("·")
-                .foregroundStyle(.tertiary)
-            statusDot(for: shellState)
-            Text("Terminal \(shellState.displayName)")
+        VStack(alignment: .leading, spacing: 4) {
+            HStack(spacing: 8) {
+                statusDot(for: claudeState)
+                Text("Claude \(claudeState.displayName)")
+                Text("·")
+                    .foregroundStyle(.tertiary)
+                statusDot(for: shellState)
+                Text("Terminal \(shellState.displayName)")
+            }
+            .font(.caption)
+            .foregroundStyle(.secondary)
+
+            if didIncludeMemoryOnStart {
+                Label("Workstream Memory included", systemImage: "brain.head.profile")
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+            } else if detail.workstream.memory?.hasContent == true, !isRunning {
+                Label("This session can start with Workstream Memory", systemImage: "brain.head.profile")
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+            }
         }
-        .font(.caption)
-        .foregroundStyle(.secondary)
+    }
+
+    private var didIncludeMemoryOnStart: Bool {
+        isRunning && detail.workstream.memory?.hasContent == true && detail.session.claudeSessionIdentifier != nil
     }
 
     private var claudeState: TerminalRuntimeState {
@@ -257,98 +273,142 @@ struct WorkstreamMemorySheet: View {
             openWork: [],
             risksAndUnknowns: [],
             updatedAt: workstream.lastOpenedAt ?? workstream.createdAt,
-            sourceSessionId: nil,
-            revision: 0
+            sourceSessionId: session?.id,
+            revision: workstream.memory?.revision ?? 0
         ))
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            HStack {
-                Text("Workstream Memory")
-                    .font(.title2)
-                    .fontWeight(.semibold)
+        ScrollView {
+            VStack(alignment: .leading, spacing: 16) {
+                HStack {
+                    Text("Workstream Memory")
+                        .font(.title2)
+                        .fontWeight(.semibold)
 
-                Spacer()
+                    Spacer()
 
-                Button(isEditing ? "Done Editing" : "Edit") {
-                    isEditing.toggle()
+                    if isEditing {
+                        Button("Cancel") {
+                            draftMemory = persistedMemory
+                            isEditing = false
+                        }
+
+                        Button("Save Correction") {
+                            saveCorrection()
+                        }
+                        .buttonStyle(.borderedProminent)
+                    } else {
+                        Button("Edit") {
+                            draftMemory = persistedMemory
+                            isEditing = true
+                        }
+                    }
+
+                    if workstream.memoryHistory.count >= 2 {
+                        Button("Undo", action: onUndo)
+                    }
                 }
 
-                if workstream.memoryHistory.count >= 2 {
-                    Button("Undo", action: onUndo)
-                }
-            }
+                VStack(alignment: .leading, spacing: 6) {
+                    Text(workstream.name)
+                        .font(.headline)
 
-            VStack(alignment: .leading, spacing: 6) {
-                Text(workstream.name)
-                    .font(.headline)
-
-                Text(repository.name)
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-
-                if let description = workstream.description, !description.isEmpty {
-                    Text(description)
+                    Text(repository.name)
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
+
+                    if let description = workstream.description, !description.isEmpty {
+                        Text(description)
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+
+                metadataSection
+                memorySection(title: "Objective", text: $draftMemory.objective)
+                memorySection(title: "Current State", text: $draftMemory.currentState)
+                bulletSection(title: "Decisions", items: Binding(
+                    get: { draftMemory.decisions.joined(separator: "\n") },
+                    set: { draftMemory.decisions = normalizeLines($0) }
+                ))
+                bulletSection(title: "Open Work", items: Binding(
+                    get: { draftMemory.openWork.joined(separator: "\n") },
+                    set: { draftMemory.openWork = normalizeLines($0) }
+                ))
+                bulletSection(title: "Risks and Unknowns", items: Binding(
+                    get: { draftMemory.risksAndUnknowns.joined(separator: "\n") },
+                    set: { draftMemory.risksAndUnknowns = normalizeLines($0) }
+                ))
+
+                if !workstream.memoryHistory.isEmpty {
+                    historySection
+                }
+
+                HStack {
+                    Spacer()
+
+                    Button("Done") {
+                        dismiss()
+                    }
+                    .keyboardShortcut(.defaultAction)
                 }
             }
-
-            metadataSection
-            memorySection(title: "Objective", text: $draftMemory.objective)
-            memorySection(title: "Current State", text: $draftMemory.currentState)
-            bulletSection(title: "Decisions", items: Binding(
-                get: { draftMemory.decisions.joined(separator: "\n") },
-                set: { draftMemory.decisions = normalizeLines($0) }
-            ))
-            bulletSection(title: "Open Work", items: Binding(
-                get: { draftMemory.openWork.joined(separator: "\n") },
-                set: { draftMemory.openWork = normalizeLines($0) }
-            ))
-            bulletSection(title: "Risks and Unknowns", items: Binding(
-                get: { draftMemory.risksAndUnknowns.joined(separator: "\n") },
-                set: { draftMemory.risksAndUnknowns = normalizeLines($0) }
-            ))
-
-            if !workstream.memoryHistory.isEmpty {
-                historySection
-            }
-
-            HStack {
-                Spacer()
-
-                Button("Done") {
-                    dismiss()
-                }
-                .keyboardShortcut(.defaultAction)
-            }
+            .padding(24)
         }
-        .padding(24)
         .frame(width: 620, height: 720)
-        .onChange(of: draftMemory) { _, newValue in
-            guard isEditing else { return }
-            var corrected = newValue
-            corrected.updatedAt = .now
-            corrected.sourceSessionId = corrected.sourceSessionId ?? session?.id
-            corrected.revision = max((workstream.memory?.revision ?? 0) + 1, corrected.revision)
-            onMemoryChange(corrected)
+    }
+
+    private var persistedMemory: WorkstreamMemory {
+        workstream.memory ?? WorkstreamMemory(
+            objective: "",
+            currentState: "",
+            decisions: [],
+            openWork: [],
+            risksAndUnknowns: [],
+            updatedAt: workstream.lastOpenedAt ?? workstream.createdAt,
+            sourceSessionId: session?.id,
+            revision: 0
+        )
+    }
+
+    private func saveCorrection() {
+        guard draftMemory != persistedMemory else {
+            isEditing = false
+            return
         }
+
+        var corrected = draftMemory
+        corrected.sourceSessionId = corrected.sourceSessionId ?? session?.id
+        onMemoryChange(corrected)
+        isEditing = false
     }
 
     private var metadataSection: some View {
         Grid(alignment: .leading, horizontalSpacing: 18, verticalSpacing: 8) {
             GridRow {
                 metadataLabel("Updated")
-                Text(workstream.memory?.updatedAt.formatted(date: .abbreviated, time: .shortened) ?? "Never")
+                Text(persistedMemory.updatedAt.formatted(date: .abbreviated, time: .shortened))
             }
 
             GridRow {
                 metadataLabel("Revision")
-                Text("\(workstream.memory?.revision ?? 0)")
+                Text("\(persistedMemory.revision)")
             }
 
-            if let sourceSessionId = workstream.memory?.sourceSessionId {
+            GridRow {
+                metadataLabel("Created")
+                Text(workstream.createdAt.formatted(date: .abbreviated, time: .shortened))
+            }
+
+            if let lastOpenedAt = workstream.lastOpenedAt {
+                GridRow {
+                    metadataLabel("Last Opened")
+                    Text(lastOpenedAt.formatted(date: .abbreviated, time: .shortened))
+                }
+            }
+
+            if let sourceSessionId = persistedMemory.sourceSessionId {
                 GridRow {
                     metadataLabel("Source Session")
                     Text(sourceSessionName(sourceSessionId) ?? sourceSessionId.uuidString)
@@ -426,19 +486,27 @@ struct WorkstreamMemorySheet: View {
                 .font(.headline)
 
             ScrollView {
-                VStack(alignment: .leading, spacing: 6) {
+                VStack(alignment: .leading, spacing: 8) {
                     ForEach(Array(workstream.memoryHistory.reversed())) { revision in
-                        HStack {
-                            Text("Revision \(revision.revision)")
-                            Spacer()
-                            Text(revision.timestamp.formatted(date: .abbreviated, time: .shortened))
-                                .foregroundStyle(.secondary)
+                        VStack(alignment: .leading, spacing: 2) {
+                            HStack {
+                                Text("Revision \(revision.revision)")
+                                Spacer()
+                                Text(revision.timestamp.formatted(date: .abbreviated, time: .shortened))
+                                    .foregroundStyle(.secondary)
+                            }
+                            .font(.caption)
+
+                            if let sourceSessionId = revision.sourceSessionId {
+                                Text(sourceSessionName(sourceSessionId) ?? sourceSessionId.uuidString)
+                                    .font(.caption2)
+                                    .foregroundStyle(.secondary)
+                            }
                         }
-                        .font(.caption)
                     }
                 }
             }
-            .frame(maxHeight: 120)
+            .frame(maxHeight: 140)
         }
     }
 
